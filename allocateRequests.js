@@ -18,9 +18,9 @@ mongo.connect(url, { useNewUrlParser: true }, function (err, db) {
 				console.log('create butler ' + newRequestHours + ' ' + result[request].requestId);
 				var butlerData = { "_id": butlerId, "requests": [result[request].requestId] };
 				returnJSON.butlers.push(butlerData);
+				hours = 0;
 			} else {
-				var existingIndex = butlerId - 1;
-				if (existingIndex == -1) {
+				if (hours == 0) {
 					butlerId = butlerId + 1;
 					console.log('create butler ' + newRequestHours + ' ' + result[request].requestId);
 					var butlerData = { "_id": butlerId, "requests": [result[request].requestId] };
