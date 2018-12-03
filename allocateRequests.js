@@ -12,27 +12,28 @@ mongo.connect(url, { useNewUrlParser: true }, function (err, db) {
 		var hours = 0;
 		var butlerId = 0;
 		for (request in result) {
-			if ((hours + result[request].hours) < 8) {
-				console.log('create butler ' + result[request].hours + ' ' + result[request].requestId);
-				var butlerData = { "_id": butlerId, "requests": [result[request].requestId] };
-				returnJSON.butlers[0].requests.push(butlerData);
+			var newRequestHours = result[request].hours;
+			if ((hours + newRequestHours) > 8) {
 				butlerId = butlerId + 1;
+				console.log('create butler ' + newRequestHours + ' ' + result[request].requestId);
+				var butlerData = { "_id": butlerId, "requests": [result[request].requestId] };
+				returnJSON.butlers.push(butlerData);
 			} else {
-				var existingIndex = butlerId - 2;
-				console.log('adding to existing butler ' + result[request].hours);
-				for (index = 0, len = returnJSON.butlers.length; index < len; ++index) {
+				var existingIndex = butlerId - 1;
+				if (existingIndex == -1) {
+					butlerId = butlerId + 1;
+					console.log('create butler ' + newRequestHours + ' ' + result[request].requestId);
+					var butlerData = { "_id": butlerId, "requests": [result[request].requestId] };
+					returnJSON.butlers.push(butlerData);
+				} else {
+					console.log('adding to existing butler ' + newRequestHours);
+					var index = returnJSON.butlers.length - 1;
 					console.log(returnJSON.butlers[index]);
 					var butlerRequests = returnJSON.butlers[index].requests;
-					var butlerData = function filterData(index) {
-						return butlerRequests.filter(function (butlerRequests) { return butlerRequests._id == index })
-					};
-					console.log(butlerData(index));
-					if (butlerData.length >= 1) {
-						butlerData(index).push(result[request].requestId);
-					}
+					butlerRequests.push(result[request].requestId)
 				}
 			}
-			hours = hours + result[request].hours;
+			hours = hours + newRequestHours;
 			if (hours > 8)
 				hours = 0;
 		}
