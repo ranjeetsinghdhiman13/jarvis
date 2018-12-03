@@ -9,7 +9,6 @@ I have chose MongoDB as database. Rest of the code is basic API of nodeJS
 2. MongoDB
 
 # Application Assumptions
-Regarding (**Total number of bets sold per hour**) rest endpoint, requirement was not clear. So I have assumed that I will pass fromDate and toDate as request parameters to limit the number of records return in the response.
 
 # How to run this application
 * Install NodeJS if note already installed. The official Node.js website has installation instructions for Node.js: https://nodejs.org
@@ -28,6 +27,10 @@ Regarding (**Total number of bets sold per hour**) rest endpoint, requirement wa
 * Run the following command to create test data
 
 ```node mongoCreate.js```
+* Run the following command to view results of the first assignment.
+
+```node allocateRequests.js```
+
 
 # Testing
 
