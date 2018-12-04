@@ -35,13 +35,17 @@ mongo.connect(url, { useNewUrlParser: true }, function (err, db) {
 			returnJSON.spreadClientIds.push(clientId);
 		}
 		console.log(returnJSON);
-		fs.writeFile('./output.json', JSON.stringify(returnJSON), function (err) {
-			if (err) throw err;
-			console.log('Output Saved!');
-		  });
+		writeOutputToDisk(JSON.stringify(returnJSON));
 		});
 	db.close();
 });
+
+function writeOutputToDisk(jsonString) {
+	fs.writeFile('./output.json', jsonString, function (err) {
+		if (err) throw err;
+		console.log('Output Saved!');
+	  });
+}
 
 function addTaskToExistingButler(newRequestHours, result) {
 	console.log('adding to existing butler ' + newRequestHours);
