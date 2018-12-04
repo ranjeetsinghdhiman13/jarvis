@@ -17,13 +17,11 @@ mongo.connect(url, { useNewUrlParser: true }, function (err, db) {
 			setOfClientIds.add(result[request].clientId);
 			var newRequestHours = result[request].hours;
 			if ((hours + newRequestHours) > 8) {
-				var butlerData;
-				({ butlerData, butlerId } = createNewButler(butlerId, newRequestHours, result, butlerData));
+				butlerId = createNewButler(butlerId, newRequestHours, result);
 				hours = 0;
 			} else {
 				if (hours == 0) {
-					var butlerData;
-					({ butlerData, butlerId } = createNewButler(butlerId, newRequestHours, result, butlerData));
+					butlerId = createNewButler(butlerId, newRequestHours, result);
 				} else {
 					addTaskToExistingButler(newRequestHours, result);
 				}
@@ -53,7 +51,7 @@ function addTaskToExistingButler(newRequestHours, result) {
 	butlerRequests.push(result[request].requestId);
 }
 
-function createNewButler(butlerId, newRequestHours, result, butlerData) {
+function createNewButler(butlerId, newRequestHours, result) {
 	butlerId = butlerId + 1;
 	console.log('create butler ' + newRequestHours + ' ' + result[request].requestId);
 	var butlerData = { "requests": [result[request].requestId] };
