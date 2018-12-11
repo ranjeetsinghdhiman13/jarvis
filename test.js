@@ -1,5 +1,5 @@
 var expect = require('chai').expect;
-var allocator = require('./allocateRequests.js');
+var allocator = require('./allocateHelper.js');
 
 describe('writes output to file', function() {
     it('writes string to a file', function() {
