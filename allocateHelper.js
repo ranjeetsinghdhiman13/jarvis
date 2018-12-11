@@ -1,9 +1,18 @@
 var fs = require('fs');
 var assert = require('assert');
+var setOfClientIds = new Set();
+var returnValue = '{"butlers": [{"requests": []}],"spreadClientIds": []}';
+var returnJSON = JSON.parse(returnValue);
 
 var allocateHelper = {
 
-    addClientIdToSet: function (clientId, setOfClientIds) {
+    getClientIdsSet:function() {
+        return setOfClientIds;
+    },
+    getReturnJSONObject: function () {
+        return returnJSON;
+    },
+    addClientIdToSet: function (clientId) {
         assert(clientId != null && clientId > 0);
         setOfClientIds.add(clientId);
     },

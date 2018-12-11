@@ -4,12 +4,8 @@ var fs = require('fs');
 var assert = require('assert');
 var allocateHelper = require('./allocateHelper.js');
 
-var returnValue = '{"butlers": [{"requests": []}],"spreadClientIds": []}';
-var returnJSON = JSON.parse(returnValue);
-var setOfClientIds = new Set();
-
 mongo.connect(url, { useNewUrlParser: true }, function (err, db) {
-	console.log(returnJSON);
+	console.log(allocateHelper.getReturnJSONObject());
 	if (err) throw err;
 	var dbObject = db.db('mydb');
 	dbObject.collection('requests').find().toArray(function (err, result) {
@@ -34,11 +30,11 @@ mongo.connect(url, { useNewUrlParser: true }, function (err, db) {
 				hours = 0;
 		}
 		console.log('======');
-		for (let clientId of setOfClientIds) {
-			returnJSON.spreadClientIds.push(clientId);
+		for (let clientId of allocateHelper.getClientIdsSet()) {
+			allocateHelper.getReturnJSONObject().spreadClientIds.push(clientId);
 		}
-		console.log(returnJSON);
-		allocateHelper.writeOutputToDisk(JSON.stringify(returnJSON), './output.json');
+		console.log(allocateHelper.getReturnJSONObject());
+		allocateHelper.writeOutputToDisk(JSON.stringify(allocateHelper.getReturnJSONObject()), './output.json');
 		});
 	db.close();
 });
